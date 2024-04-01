@@ -1,6 +1,7 @@
 //import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cars/bloc/route_from_to/route_from_to.dart';
 import 'package:cars/models/car_order.dart';
+import 'package:cars/pages/video_player_page.dart';
 import 'package:cars/res/odder_functions.dart';
 import 'package:cars/widgets/bottom_sheet/forms/driver_active_form.dart';
 import 'package:cars/widgets/bottom_sheet/forms/pass_plan_form.dart';
@@ -10,6 +11,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expandable_bottom_sheet/expandable_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 //import 'package:notification_permissions/notification_permissions.dart';
 import '../bloc/car_order_bloc/car_order_bloc.dart';
 import '../widgets/bottom_sheet/bottom_shet_header.dart';
@@ -151,8 +154,7 @@ class _DriverHomePageState extends State<DriverHomePage> {
     return Scaffold(
       key: _scaffoldKey,
       drawerEnableOpenDragGesture: false,
-      floatingActionButton:
-          VideoButton(mapKey: mapKey, mapDriverKey: mapDriverKey),
+
       drawer: DriverMenu(),
       body: ExpandableBottomSheet(
         key: key,

@@ -17,7 +17,7 @@ class UserCubit extends HydratedCubit<CarUser?> {
     hydrate();
   }
 
-  CarUser? get() => state;
+  CarUser? getUser() => state;
 
   bool addAddress({required String name, required Place place}) {
     if (state!.addressList == null) {
@@ -49,7 +49,7 @@ class UserCubit extends HydratedCubit<CarUser?> {
   }) {
     // oldAddress = {name: place};
     var foundIndex =
-        state?.addressList!.indexWhere((element) => element.keys.first == name);
+    state?.addressList!.indexWhere((element) => element.keys.first == name);
     if (foundIndex == -1 ||
         state!.addressList![foundIndex!].keys.first == oldAddress.keys.first) {
       List<Map<String, Place>> tmp = [];

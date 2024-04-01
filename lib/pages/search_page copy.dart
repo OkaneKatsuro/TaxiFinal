@@ -277,7 +277,7 @@ class _SearchPageState extends State<SearchPage> {
                   children: [
                     ...context
                         .read<UserCubit>()
-                        .get()!
+                        .getUser()!
                         .addressList!
                         .map(
                           (e) => Column(

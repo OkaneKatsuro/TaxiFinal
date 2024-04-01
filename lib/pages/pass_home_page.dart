@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cars/bloc/route_from_to/route_from_to.dart';
 import 'package:cars/bloc/user/user_cubit.dart';
+import 'package:cars/pages/video_player_page.dart';
 import 'package:cars/res/odder_functions.dart';
 import 'package:cars/res/styles.dart';
 import 'package:cars/widgets/bottom_sheet/bottom_shet_header.dart';
@@ -27,6 +28,7 @@ import '../widgets/car_status.dart';
 import '../widgets/driving_map_pass_container.dart';
 import '../widgets/map_container.dart';
 import '../widgets/maps/res/functions.dart';
+
 
 class PassHomePage extends StatefulWidget {
   const PassHomePage({super.key});
@@ -78,9 +80,9 @@ class _PassHomePageState extends State<PassHomePage> {
   }
 
   late StreamSubscription<QuerySnapshot<Map<String, dynamic>>>
-      streamSubscription;
+  streamSubscription;
   Stream<QuerySnapshot<Map<String, dynamic>>> myStream =
-      FirebaseFirestore.instance.collection("orders").snapshots();
+  FirebaseFirestore.instance.collection("orders").snapshots();
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   GlobalKey<ExpandableBottomSheetState> key = GlobalKey();
@@ -155,8 +157,11 @@ class _PassHomePageState extends State<PassHomePage> {
     return Scaffold(
       key: _scaffoldKey,
       drawer: const PassMenu(),
-      floatingActionButton:
-          VideoButton(mapKey: mapKey, mapDriverKey: mapDriverKey),
+      floatingActionButton: VideoButton(
+        onPressed: () {
+          Get.to(() => VideoPlayerPage());
+        },
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndDocked,
       body: ExpandableBottomSheet(
         key: key,
@@ -164,10 +169,10 @@ class _PassHomePageState extends State<PassHomePage> {
         expandableContent: isPerenos && !isWaiting
             ? PassBottomPerenos()
             : isWaiting && !isPerenos
-                ? const PassBottomWaiting()
-                : order.status == CarOrderStatus.active
-                    ? PassBottomActive()
-                    : PassBottomSheetBody(order: order),
+            ? const PassBottomWaiting()
+            : order.status == CarOrderStatus.active
+            ? PassBottomActive()
+            : PassBottomSheetBody(order: order),
         onIsContractedCallback: () {},
         background: Container(
           margin: const EdgeInsets.symmetric(horizontal: 0),
@@ -178,8 +183,8 @@ class _PassHomePageState extends State<PassHomePage> {
                 alignment: Alignment.topCenter,
                 children: [
                   order.from == null ||
-                          order.route == null ||
-                          order.route!.isEmpty
+                      order.route == null ||
+                      order.route!.isEmpty
                       ? MapContainer(key: mapKey, canChangeGeo: false)
                       : DrivingMapPassContainer(key: mapDriverKey),
                   Positioned(
@@ -192,7 +197,7 @@ class _PassHomePageState extends State<PassHomePage> {
                       icon: Icon(
                         Icons.menu,
                         size: 30,
-                        color: black,
+                        color: Colors.black, // Исправлено: black -> Colors.black
                       ),
                     ),
                   ),

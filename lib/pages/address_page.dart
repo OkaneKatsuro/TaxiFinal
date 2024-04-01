@@ -65,12 +65,12 @@ class _AddressPageState extends State<AddressPage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    context.read<UserCubit>().get()?.addressList != null
+                    context.read<UserCubit>().getUser()?.addressList != null
                         ? Column(
                             children: [
                               ...context
                                   .watch<UserCubit>()
-                                  .get()!
+                                  .getUser()!
                                   .addressList!
                                   .map((e) => AddressContainer(
                                         el: e,

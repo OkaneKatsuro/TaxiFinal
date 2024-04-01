@@ -30,7 +30,7 @@ class _HistoryPageState extends State<HistoryPage> {
     comment = TextEditingController(
         text: context.read<RouteFromToCubit>().get().comment ?? '');
     () async {
-      print(context.read<UserCubit>().get()!.id);
+      print(context.read<UserCubit>().getUser()!.id);
       var tmp = await getHistory(context);
       if (tmp != null) {
         setState(() {
@@ -80,7 +80,7 @@ class _HistoryPageState extends State<HistoryPage> {
                       (e) => PlaningContainer(
                         isHistory: true,
                         name:
-                            context.read<UserCubit>().get()!.role == Role.driver
+                            context.read<UserCubit>().getUser()!.role == Role.driver
                                 ? e.passName ?? ''
                                 : e.driverName ?? '',
                         route: [

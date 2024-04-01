@@ -38,7 +38,7 @@ class _LoadingPageState extends State<LoadingPage> {
       await updateCarLocation();
       context.read<PositionBloc>().add(PositionEvent.startService());
       // await Future.delayed(const Duration(seconds: 7));
-      var carUser = context.read<UserCubit>().get();
+      var carUser = context.read<UserCubit>().getUser();
       bool res = carUser != null
           ? await checkPhone(phoneStr: carUser.phone, role: carUser.role)
           : false;

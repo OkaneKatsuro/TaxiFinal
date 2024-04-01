@@ -71,9 +71,9 @@ class CarOrderBloc extends Bloc<CarOrderEvent, CarOrderState> {
         }
         print('Обновление заказа');
 
-        var activeOrder = await getActiveOrderByPassId(user.get()!.id);
+        var activeOrder = await getActiveOrderByPassId(user.getUser()!.id);
 
-        var waitingOrder = await getWaingOrderByPassId(user.get()!.id);
+        var waitingOrder = await getWaingOrderByPassId(user.getUser()!.id);
 
         var orderById = await getOrderByOrderId(currentOrder.id ?? '');
 

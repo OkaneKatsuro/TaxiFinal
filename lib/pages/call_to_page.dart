@@ -61,7 +61,7 @@ class _CallToPassState extends State<CallToPass> {
                   ),
                   Expanded(child: SizedBox()),
                   Text(
-                    'Позвонить ${context.read<UserCubit>().get()!.role == Role.driver ? 'пассажиру' : 'водителю'}',
+                    'Позвонить ${context.read<UserCubit>().getUser()!.role == Role.driver ? 'пассажиру' : 'водителю'}',
                     style: h17w500Black,
                   ),
                   Expanded(child: SizedBox()),

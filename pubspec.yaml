@@ -66,6 +66,7 @@ dependencies:
   cookie_jar: ^4.0.8
   flutter_azimuth: ^1.0.1
   flutter_localization: ^0.1.13
+  ext_video_player: ^0.1.2
 
   #flutter_callkit_incoming: ^2.0.0+1
   firebase_messaging: ^14.6.7
@@ -126,6 +127,7 @@ flutter:
     - asstes/webcam2.png
     - asstes/cam7.png
     - asstes/point_1.png
+    - asstes/map.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

@@ -71,7 +71,7 @@ class _PlaningContainerState extends State<PlaningContainer> {
     }
     return InkWell(
       onTap: () {
-        if (context.read<UserCubit>().get()!.role == Role.driver) {
+        if (context.read<UserCubit>().getUser()!.role == Role.driver) {
           if (context.read<RouteFromToCubit>().get().status ==
               CarOrderStatus.active) {
             showDialog<String>(
@@ -181,7 +181,7 @@ class _PlaningContainerState extends State<PlaningContainer> {
                                         Text(
                                             context
                                                         .read<UserCubit>()
-                                                        .get()!
+                                                        .getUser()!
                                                         .role ==
                                                     Role.pass
                                                 ? 'водитель: '
@@ -242,7 +242,7 @@ class _PlaningContainerState extends State<PlaningContainer> {
                     ),
             ),
             if (!widget.isHistory &&
-                context.read<UserCubit>().get()!.role == Role.pass)
+                context.read<UserCubit>().getUser()!.role == Role.pass)
               Positioned(
                   right: 10,
                   bottom: 8,

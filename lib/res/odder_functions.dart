@@ -30,13 +30,13 @@ Future<CarOrder?> orderNow(BuildContext context) async {
       .add(Duration(seconds: back));
 
   context.read<CarOrderBloc>().currentOrder.passName =
-      context.read<CarOrderBloc>().user.get()!.fname +
+      context.read<CarOrderBloc>().user.getUser()!.fname +
           ' ' +
-          context.read<CarOrderBloc>().user.get()!.lname;
+          context.read<CarOrderBloc>().user.getUser()!.lname;
 
   context.read<CarOrderBloc>().currentOrder.id = id;
   context.read<CarOrderBloc>().currentOrder.passId =
-      context.read<CarOrderBloc>().user.get()!.id;
+      context.read<CarOrderBloc>().user.getUser()!.id;
 
   var order = context.read<CarOrderBloc>().currentOrder;
 
@@ -65,11 +65,11 @@ orderConfirm(BuildContext context) {
   var id = context.read<RouteFromToCubit>().get().id;
 
   context.read<RouteFromToCubit>().setDriverName(
-      context.read<UserCubit>().get()!.fname +
+      context.read<UserCubit>().getUser()!.fname +
           ' ' +
-          context.read<UserCubit>().get()!.lname);
+          context.read<UserCubit>().getUser()!.lname);
   var order = context.read<RouteFromToCubit>().get();
-  order.driverId = context.read<UserCubit>().get()!.id;
+  order.driverId = context.read<UserCubit>().getUser()!.id;
   FirebaseFirestore.instance.collection('orders').doc(id).set(order.toJson());
 }
 
@@ -203,10 +203,10 @@ Future<void> startOrderById(String id, BuildContext context) async {
       await FirebaseFirestore.instance.collection('orders').doc(id).get();
   var json = order.data();
   json!['status'] = 'waiting';
-  json!['driverId'] = context.read<UserCubit>().get()!.id;
-  json!['driverName'] = context.read<UserCubit>().get()!.fname +
+  json!['driverId'] = context.read<UserCubit>().getUser()!.id;
+  json!['driverName'] = context.read<UserCubit>().getUser()!.fname +
       ' ' +
-      context.read<UserCubit>().get()!.lname;
+      context.read<UserCubit>().getUser()!.lname;
 
   var tmpOrder = CarOrder.fromJson(json);
   await FirebaseFirestore.instance.collection('orders').doc(id).set(json);

@@ -1,10 +1,10 @@
 import 'package:cars/res/styles.dart';
 import 'package:flutter/material.dart';
 
-class VideoButton extends StatelessWidget {
+class MapButton extends StatelessWidget {
   final VoidCallback onPressed;
 
-  const VideoButton({Key? key, required this.onPressed}) : super(key: key);
+  const MapButton({Key? key, required this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class VideoButton extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
-                    'asstes/cam.png',
+                    'asstes/map.png',
                     color: blue,
                     scale: 20,
                   ),

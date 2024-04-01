@@ -31,12 +31,10 @@ class _ChatsPageState extends State<ChatsPage> {
   var comment = TextEditingController();
 
   @override
-  void initState() {
-    comment = TextEditingController(
-        text: context.read<RouteFromToCubit>().get().comment ?? '');
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     () async {
-      var tmp = await getUserList(context.read<UserCubit>().get()!.role);
+      var tmp = await getUserList(context.read<UserCubit>().getUser()!.role);
       setState(() {
         if (tmp != null) map = tmp;
       });
@@ -46,11 +44,12 @@ class _ChatsPageState extends State<ChatsPage> {
           .snapshots()
           .listen((event) {
         print('EVENTTTTT');
+        print(context.read<UserCubit>().getUser()!.role);
         map.entries.forEach((element) async {
-          var nm = context.read<UserCubit>().get()!.role == Role.pass
-              ? context.read<UserCubit>().get()!.id + '-' + element.key
-              : element.key + '-' + context.read<UserCubit>().get()!.id;
-          print(nm);
+          var nm = context.read<UserCubit>().getUser()!.role == Role.pass
+              ? context.read<UserCubit>().getUser()!.id + '-' + element.key
+              : element.key + '-' + context.read<UserCubit>().getUser()!.id;
+          print('');
 
           //get last msg
           var m = await getLastMessage(docId: nm);
@@ -74,21 +73,20 @@ class _ChatsPageState extends State<ChatsPage> {
           children: [
             Container(
               alignment: Alignment.bottomLeft,
-              //color: Colors.white,
               width: double.infinity,
               padding: EdgeInsets.only(top: 10, left: 10),
               child: Row(
                 children: [
                   InkWell(
                     onTap: () => Get.offAll(
-                        context.read<UserCubit>().get()!.role == Role.driver
+                        context.read<UserCubit>().getUser()!.role == Role.driver
                             ? DriverHomePage()
                             : PassHomePage()),
                     child: Icon(Icons.arrow_back_ios),
                   ),
                   Expanded(child: SizedBox()),
                   Text(
-                    'Чаты с ${context.read<UserCubit>().get()!.role == Role.driver ? 'пассажирами' : 'водителями'}',
+                    'Чаты с ${context.read<UserCubit>().getUser()!.role == Role.driver ? 'пассажирами' : 'водителями'}',
                     style: h17w500Black,
                   ),
                   Expanded(child: SizedBox()),
@@ -99,19 +97,20 @@ class _ChatsPageState extends State<ChatsPage> {
             MyDivider(),
             SizedBox(height: 20),
             ...map.entries.map((e) {
-              var nm = context.read<UserCubit>().get()!.role == Role.pass
-                  ? context.read<UserCubit>().get()!.id + '-' + e.key
-                  : e.key + '-' + context.read<UserCubit>().get()!.id;
+              var nm = context.read<UserCubit>().getUser()!.role == Role.pass
+                  ? context.read<UserCubit>().getUser()!.id + '-' + e.key
+                  : e.key + '-' + context.read<UserCubit>().getUser()!.id;
 
               return InkWell(
                 onTap: () {
-                  if (context.read<UserCubit>().get()!.role == Role.pass) {
+                  print(context.read<UserCubit>().getUser()!.id);
+                  if (context.read<UserCubit>().getUser()!.role == Role.pass) {
                     Get.to(OneChatPage(
-                        passId: context.read<UserCubit>().get()!.id,
+                        passId: context.read<UserCubit>().getUser()!.id,
                         driverId: e.key));
                   } else {
                     Get.to(OneChatPage(
-                        driverId: context.read<UserCubit>().get()!.id,
+                        driverId: context.read<UserCubit>().getUser()!.id,
                         passId: e.key));
                   }
                 },

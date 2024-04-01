@@ -23,7 +23,7 @@ class _CommentPageState extends State<CommentPage> {
   @override
   void initState() {
     comment = TextEditingController(
-        text: context.read<UserCubit>().get()!.role == Role.driver
+        text: context.read<UserCubit>().getUser()!.role == Role.driver
             ? 'Комментарий водителю: \n\n${context.read<RouteFromToCubit>().get().comment ?? ''}'
             : context.read<RouteFromToCubit>().get().comment ?? '');
     super.initState();

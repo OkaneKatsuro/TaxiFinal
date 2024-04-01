@@ -43,7 +43,7 @@ class MapContainerState extends State<MapContainer> {
     var defLocation = MoscowLocation();
 
     if (!showCar &&
-        context.read<CarOrderBloc>().user.get()!.role != Role.driver) {
+        context.read<CarOrderBloc>().user.getUser()!.role != Role.driver) {
       try {
         if (context.read<CarOrderBloc>().currentOrder.from == null) {
           location = await LocationService().getCurrentLocation();
@@ -110,7 +110,7 @@ class MapContainerState extends State<MapContainer> {
       () async {
         AppLatLong location;
 
-        if (context.read<CarOrderBloc>().user.get()!.role == Role.driver) {
+        if (context.read<CarOrderBloc>().user.getUser()!.role == Role.driver) {
           location = AppLatLong(lat: car.lat, long: car.long);
           try {
             setState(() {

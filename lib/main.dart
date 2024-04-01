@@ -1,7 +1,4 @@
-//import 'package:awesome_notifications/awesome_notifications.dart';
-import 'dart:isolate';
-import 'dart:ui';
-
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cars/bloc/app_bottom_form/app_bottom_form.dart';
 import 'package:cars/bloc/car_order_bloc/car_order_bloc.dart';
 import 'package:cars/bloc/position_bloc/position_bloc.dart';
@@ -20,8 +17,6 @@ import 'bloc/route_from_to/route_from_to.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
 import 'package:path_provider/path_provider.dart';
 
 void main() async {
@@ -31,98 +26,69 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await NotificationController.initializeLocalNotifications();
-  await NotificationController.initializeIsolateReceivePort();
-  // await AwesomeNotifications().requestPermissionToSendNotifications(
-  //   permissions: [
-  //     NotificationPermission.Alert,
-  //     NotificationPermission.Sound,
-  //     NotificationPermission.Badge,
-  //     NotificationPermission.Vibration,
-  //     NotificationPermission.Light,
-  //     NotificationPermission.FullScreenIntent,
-  //   ],
-  // );
-  // AwesomeNotifications().initialize(
-  //     // set the icon to null if you want to use the default app icon
-  //     null,
-  //     [
-  //       NotificationChannel(
-  //         playSound: true,
-  //         onlyAlertOnce: true,
-  //         channelGroupKey: 'basic_channel_group',
-  //         channelKey: 'basic_channel',
-  //         channelName: 'Basic notifications',
-  //         channelDescription: 'Notification channel for basic tests',
-  //         defaultColor: Color(0xFF9D50DD),
-  //         importance: NotificationImportance.High,
-  //         groupAlertBehavior: GroupAlertBehavior.Children,
-  //         defaultPrivacy: NotificationPrivacy.Private,
-  //         channelShowBadge: true,
-  //         criticalAlerts: true,
-  //         vibrationPattern: highVibrationPattern,
-  //       ),
-  //     ],
-  //     // Channel groups are only visual and are not required
-  //     channelGroups: [
-  //       NotificationChannelGroup(
-  //           channelGroupName: 'Basic group',
-  //           channelGroupkey: 'basic_channel_group')
-  //     ],
-  //     debug: true);
-  // await AwesomeNotifications().requestPermissionToSendNotifications(
-  //   permissions: [
-  //     NotificationPermission.FullScreenIntent,
-  //   ],
-  // );
+  await AwesomeNotifications().initialize(
+    null,
+    [
+      NotificationChannel(
+        channelKey: 'basic_channel',
+        channelName: 'Basic notifications',
+        channelDescription: 'Notification channel for basic notifications',
+        defaultColor: Color(0xFF9D50DD),
+        ledColor: Colors.white,
+      ),
+    ],
+  );
+
+  await AwesomeNotifications().requestPermissionToSendNotifications(
+    permissions: [
+      NotificationPermission.Alert,
+      NotificationPermission.Sound,
+      NotificationPermission.Badge,
+      NotificationPermission.Vibration,
+      NotificationPermission.Light,
+      NotificationPermission.FullScreenIntent,
+    ],
+  );
+
+  await AwesomeNotifications().initialize(
+    null,
+    [
+      NotificationChannel(
+        playSound: true,
+        onlyAlertOnce: true,
+        channelGroupKey: 'basic_channel_group',
+        channelKey: 'basic_channel',
+        channelName: 'Basic notifications',
+        channelDescription: 'Notification channel for basic tests',
+        defaultColor: Color(0xFF9D50DD),
+        importance: NotificationImportance.High,
+        groupAlertBehavior: GroupAlertBehavior.Children,
+        defaultPrivacy: NotificationPrivacy.Private,
+        channelShowBadge: true,
+        criticalAlerts: true,
+        vibrationPattern: highVibrationPattern,
+      ),
+    ],
+    channelGroups: [
+      NotificationChannelGroup(
+        channelGroupName: 'Basic group',
+        channelGroupKey: 'basic_channel_group',
+      ),
+    ],
+    debug: true,
+  );
+
+  await AwesomeNotifications().requestPermissionToSendNotifications(
+    permissions: [
+      NotificationPermission.FullScreenIntent,
+    ],
+  );
+
   runApp(const MyApp());
 }
-class NotificationController {
-  static final ReceivePort port = ReceivePort();
-  static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
-
-  static Future<void> initializeLocalNotifications() async {
-    const AndroidInitializationSettings initializationSettingsAndroid =
-    AndroidInitializationSettings('@mipmap/ic_launcher');
-
-    final InitializationSettings initializationSettings =
-    InitializationSettings(android: initializationSettingsAndroid);
-
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-
-    // Обработка нажатия на уведомление при запуске приложения
-    final NotificationAppLaunchDetails? notificationAppLaunchDetails =
-    await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
-    if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
-      // Уведомление открыто, когда приложение было закрыто
-      // Обработайте нажатие на уведомление здесь, например, открыв нужную страницу
-      handleNotificationClick();
-    }
-  }
-
-  static void handleNotificationClick() {
-    // Здесь вы можете выполнить необходимые действия при нажатии на уведомление
-    // Например, открыть страницу с чатами
-    Get.to(ChatsPage());
-  }
-
-  static Future<void> initializeIsolateReceivePort() async {
-    IsolateNameServer.registerPortWithName(port.sendPort, 'notification_port');
-    port.listen((dynamic data) {
-      print('Handling isolate message: $data');
-    });
-  }
-
-  static void dispose() {
-    IsolateNameServer.removePortNameMapping('notification_port');
-  }
-}
-
-
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -147,9 +113,7 @@ class MyApp extends StatelessWidget {
               CarOrderBloc(repo: repo, user: userCubit),
         ),
         BlocProvider<PositionBloc>(
-          create: (BuildContext context) =>
-              //    PositionBloc(repo: repo)..add(PositionEvent.startService()),
-              PositionBloc(repo: repo),
+          create: (BuildContext context) => PositionBloc(repo: repo),
         ),
       ],
       child: GetMaterialApp(
@@ -185,8 +149,6 @@ class MyApp extends StatelessWidget {
           ),
 
           home: LoadingPage(),
-          //home: ChangeRoute(),
-          // home: PassHomePage(),
         ),
       ),
     );

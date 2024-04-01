@@ -116,7 +116,7 @@ Future<List<CarOrder>?> getHistory(BuildContext context) async {
   try {
     var orders = await FirebaseFirestore.instance
         .collection('history')
-        .doc(context.read<UserCubit>().get()!.id)
+        .doc(context.read<UserCubit>().getUser()!.id)
         .collection('history')
         .orderBy('id', descending: false)
         .limit(100)
@@ -137,8 +137,8 @@ Future<List<CarOrder>?> getPlanList(BuildContext context) async {
     var orders = await FirebaseFirestore.instance.collection('orders').get();
 
     List<CarOrder> list = [];
-    var id = context.read<UserCubit>().get()!.id;
-    var role = context.read<UserCubit>().get()!.role;
+    var id = context.read<UserCubit>().getUser()!.id;
+    var role = context.read<UserCubit>().getUser()!.role;
     if (role == Role.driver) {
       orders.docs.forEach((element) {
         var data = element.data();
@@ -162,7 +162,7 @@ Future<List<CarOrder>?> getPlanList(BuildContext context) async {
 
 Future<Map<String, String>> getCallMap(BuildContext context) async {
   try {
-    var role = context.read<UserCubit>().get()!.role;
+    var role = context.read<UserCubit>().getUser()!.role;
     var users = await FirebaseFirestore.instance.collection('users').get();
 
     Map<String, String> map = {};

@@ -78,7 +78,7 @@ class _PlanPageState extends State<PlanPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ...planList.map((e) => PlaningContainer(
-                              name: context.read<UserCubit>().get()!.role ==
+                              name: context.read<UserCubit>().getUser()!.role ==
                                       Role.pass
                                   ? e.driverName ?? ''
                                   : e.passName ?? '',

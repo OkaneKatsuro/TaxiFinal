@@ -90,7 +90,7 @@ class DrivingMapContainerState extends State<DrivingMapContainer> {
 
     var resultWithSession = YandexDriving.requestRoutes(
       points: [
-        if ((context.read<UserCubit>().get()!.role == Role.driver)
+        if ((context.read<UserCubit>().getUser()!.role == Role.driver)
             // || (context.read<UserCubit>().get()!.role == Role.pass &&
             //         context.read<RouteFromToCubit>().get().status ==
             //             CarOrderStatus.waiting)
@@ -115,7 +115,7 @@ class DrivingMapContainerState extends State<DrivingMapContainer> {
       () async {
         AppLatLong location;
 
-        if (context.read<UserCubit>().get()!.role == Role.driver) {
+        if (context.read<UserCubit>().getUser()!.role == Role.driver) {
           location = AppLatLong(lat: car.lat, long: car.long);
         } else {
           location = await LocationService().getCurrentLocation();
@@ -188,7 +188,7 @@ class SessionState extends State<_SessionPage> {
   /// Получение текущей геопозиции пользователя
   Future<void> fetchCurrentLocation({bool showCar = false}) async {
     AppLatLong location;
-    if (context.read<UserCubit>().get()!.role == Role.driver) {
+    if (context.read<UserCubit>().getUser()!.role == Role.driver) {
       location = AppLatLong(lat: car.lat, long: car.long);
     } else {
       location = AppLatLong(
@@ -293,7 +293,7 @@ class SessionState extends State<_SessionPage> {
             mapObjects.clear();
             mapObjects.addAll([getCarPoint()]);
 
-            if (context.read<UserCubit>().get()!.role == Role.driver &&
+            if (context.read<UserCubit>().getUser()!.role == Role.driver &&
                 context.read<RouteFromToCubit>().get().status ==
                     CarOrderStatus.active) {}
             //определить ближайшую точку маршрута к машине
