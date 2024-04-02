@@ -28,66 +28,11 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  OneSignal.initialize('f0640bb0-a332-455c-a8a2-83fe4c7cc76a');
+
+
+
+  OneSignal.initialize('7de32efb-d1ad-4b37-91c0-de5f453264cc');
   OneSignal.Notifications.requestPermission(true);
-  await AwesomeNotifications().initialize(
-    null,
-    [
-      NotificationChannel(
-        channelKey: 'basic_channel',
-        channelName: 'Basic notifications',
-        channelDescription: 'Notification channel for basic notifications',
-        defaultColor: Color(0xFF9D50DD),
-        ledColor: Colors.white,
-      ),
-    ],
-  );
-
-  await AwesomeNotifications().requestPermissionToSendNotifications(
-    permissions: [
-      NotificationPermission.Alert,
-      NotificationPermission.Sound,
-      NotificationPermission.Badge,
-      NotificationPermission.Vibration,
-      NotificationPermission.Light,
-      NotificationPermission.FullScreenIntent,
-    ],
-  );
-
-  await AwesomeNotifications().initialize(
-    null,
-    [
-      NotificationChannel(
-        playSound: true,
-        onlyAlertOnce: true,
-        channelGroupKey: 'basic_channel_group',
-        channelKey: 'basic_channel',
-        channelName: 'Basic notifications',
-        channelDescription: 'Notification channel for basic tests',
-        defaultColor: Color(0xFF9D50DD),
-        importance: NotificationImportance.High,
-        groupAlertBehavior: GroupAlertBehavior.Children,
-        defaultPrivacy: NotificationPrivacy.Private,
-        channelShowBadge: true,
-        criticalAlerts: true,
-        vibrationPattern: highVibrationPattern,
-      ),
-    ],
-    channelGroups: [
-      NotificationChannelGroup(
-        channelGroupName: 'Basic group',
-        channelGroupKey: 'basic_channel_group',
-      ),
-    ],
-    debug: true,
-  );
-
-  await AwesomeNotifications().requestPermissionToSendNotifications(
-    permissions: [
-      NotificationPermission.FullScreenIntent,
-    ],
-  );
-
   runApp(const MyApp());
 }
 
