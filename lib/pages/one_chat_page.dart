@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'dart:async';
 
 import 'package:cars/bloc/route_from_to/route_from_to.dart';
@@ -12,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../res/chat_notification_controller.dart';
@@ -22,10 +25,12 @@ class OneChatPage extends StatefulWidget {
     Key? key,
     required this.passId,
     required this.driverId,
+    required this.oneId,
   }) : super(key: key);
 
   final String passId;
   final String driverId;
+  final String oneId;
 
   @override
   State<OneChatPage> createState() => _OneChatPageState();
@@ -55,7 +60,7 @@ class _OneChatPageState extends State<OneChatPage> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance?.removeObserver(this);
-    s?.cancel();
+    //s?.cancel();
     textcontroller.dispose();
     super.dispose();
   }
@@ -225,16 +230,12 @@ class _OneChatPageState extends State<OneChatPage> with WidgetsBindingObserver {
                         setState(() {
                           isWaiting = true;
                         });
-                        await sendMessage(
-                          passId: widget.passId,
-                          driverId: widget.driverId,
-                          message: Message(
-                            date: DateTime.now().millisecondsSinceEpoch,
-                            senderId: context.read<UserCubit>().getUser()!.id,
-                            senderName: context.read<UserCubit>().getUser()!.fname + ' ' + context.read<UserCubit>().getUser()!.lname,
-                            message: message,
-                          ),
-                        );
+                        await _handleSendMessage(Message(
+                          date: DateTime.now().millisecondsSinceEpoch,
+                          senderId: context.read<UserCubit>().getUser()!.id,
+                          senderName: context.read<UserCubit>().getUser()!.fname + ' ' + context.read<UserCubit>().getUser()!.lname,
+                          message: message,
+                        ));
                         FocusManager.instance.primaryFocus?.unfocus();
                         setState(() {
                           isWaiting = false;
@@ -284,6 +285,55 @@ class _OneChatPageState extends State<OneChatPage> with WidgetsBindingObserver {
           print(sentMessagesDate);
         }
       }
+    }
+  }
+
+  Future<void> _handleSendMessage(Message message) async {
+    // Ваш код для отправки сообщения
+    await sendMessage(
+      passId: widget.passId,
+      driverId: widget.driverId,
+      message: message,
+    );
+
+    // Получите идентификатор собеседника (OneSignal playerId)
+    String playerId = widget.oneId;
+
+    // Отправьте уведомление с помощью OneSignal
+    await sendNotification(
+      [playerId], // Список идентификаторов получателей
+      message.message, // Текст уведомления
+      'Новое сообщение', // Заголовок уведомления
+    );
+  }
+
+  Future<void> sendNotification(List<String> tokenIdList, String contents, String heading) async {
+    final String kAppId = "f0640bb0-a332-455c-a8a2-83fe4c7cc76a";
+    final String oneSignalUrl = 'https://onesignal.com/api/v1/notifications';
+
+    try {
+      print('ХХХХХХХХХХХХХХХХХХХХ');
+      print('ХХХХХХХХХХХХХХХХХХХХ');
+      print('ХХХХХХХХХХХХХХХХХХХХ');
+      print('ХХХХХХХХХХХХХХХХХХХХ');
+      await http.post(
+        Uri.parse(oneSignalUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          "app_id": kAppId,
+          "include_player_ids": tokenIdList,
+          "android_accent_color": "FF9976D2",
+          "small_icon": "ic_stat_onesignal_default",
+          "large_icon": "https://www.filepicker.io/api/file/zPloHSmnQsix82nlj9Aj?filename=name.jpg",
+          "headings": {"en": heading},
+          "contents": {"en": contents},
+        }),
+      );
+    } catch (e) {
+      print('Error sending notification: $e');
+      throw e;
     }
   }
 }

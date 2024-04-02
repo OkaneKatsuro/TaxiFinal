@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import '../models/car_order.dart';
 import '../models/message.dart';
@@ -53,6 +54,8 @@ Future<List<String>> getUserNameData(
   return list;
 }
 
+
+
 Future<void> saveUserToFireBase({
   required String uid,
   required String fname,
@@ -62,6 +65,11 @@ Future<void> saveUserToFireBase({
   required bool ispass,
   String addrJson = '',
 }) async {
+  // Получение OneSignal ID
+  String? oneId = OneSignal.User.pushSubscription.id;
+
+  // Запись OneSignal ID в Firebase
+  OneSignal.login(uid);
   var docs = await FirebaseFirestore.instance.collection('users');
   String phone1 = phone.replaceAll(RegExp(r'[() ]'), '');
   var check = await docs.doc(uid).get();
@@ -74,6 +82,7 @@ Future<void> saveUserToFireBase({
       'phone': phone1,
       'is_pass': ispass,
       'addr_json': addrJson,
+      'oneId': oneId ?? '',
     });
     var check = await docs.doc(uid).get();
     print('after update');
@@ -86,6 +95,7 @@ Future<void> saveUserToFireBase({
       's_name': sname,
       'phone': phone1,
       'is_pass': ispass,
+      'oneId': oneId ?? '',
     });
   }
   return;
@@ -190,17 +200,18 @@ Future<Map<String, String>> getCallMap(BuildContext context) async {
 
 Future<Map<String, String>?> getUserList(Role role) async {
   try {
+
     var users = await FirebaseFirestore.instance.collection('users').get();
     Map<String, String> map = {};
     users.docs.forEach((element) {
       var data = element.data();
       if (role == Role.driver) {
         if (data['is_pass'] == true) {
-          map.addAll({'${element.id}': '${data['f_name']} ${data['l_name']}'});
+          map.addAll({'${element.id}': '${data['f_name']} ${data['l_name']} ${data['oneId']}'});
         }
       } else {
         if (data['is_pass'] == false) {
-          map.addAll({'${element.id}': '${data['f_name']} ${data['l_name']}'});
+          map.addAll({'${element.id}': '${data['f_name']} ${data['l_name']} ${data['oneId']}'});
         }
       }
     });

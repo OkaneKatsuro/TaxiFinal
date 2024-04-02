@@ -13,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'bloc/route_from_to/route_from_to.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
@@ -21,11 +22,14 @@ import 'package:path_provider/path_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   HydratedBloc.storage = await HydratedStorage.build(
       storageDirectory: await getApplicationDocumentsDirectory());
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  OneSignal.initialize('f0640bb0-a332-455c-a8a2-83fe4c7cc76a');
+  OneSignal.Notifications.requestPermission(true);
   await AwesomeNotifications().initialize(
     null,
     [

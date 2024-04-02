@@ -79,9 +79,11 @@ class _ChatsPageState extends State<ChatsPage> {
                 children: [
                   InkWell(
                     onTap: () => Get.offAll(
-                        context.read<UserCubit>().getUser()!.role == Role.driver
-                            ? DriverHomePage()
-                            : PassHomePage()),
+        context.read<UserCubit>().getUser()!.role == Role.driver
+            ? DriverHomePage()
+            : PassHomePage(),
+        predicate: (route) => false,
+      ),
                     child: Icon(Icons.arrow_back_ios),
                   ),
                   Expanded(child: SizedBox()),
@@ -107,11 +109,13 @@ class _ChatsPageState extends State<ChatsPage> {
                   if (context.read<UserCubit>().getUser()!.role == Role.pass) {
                     Get.to(OneChatPage(
                         passId: context.read<UserCubit>().getUser()!.id,
-                        driverId: e.key));
+                        driverId: e.key,
+                        oneId: map[e.key]!));
                   } else {
                     Get.to(OneChatPage(
                         driverId: context.read<UserCubit>().getUser()!.id,
-                        passId: e.key));
+                        passId: e.key,
+                        oneId: map[e.key]!));
                   }
                 },
                 child: Stack(
