@@ -96,7 +96,16 @@ class _PassHomePageState extends State<PassHomePage> {
   CarOrder order = CarOrder(status: CarOrderStatus.empty);
   @override
   Widget build(BuildContext context) {
+    print('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO');
+    print('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO');
+    print('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO');
+    print('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO');
+    print('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO');
     print(context.read<CarOrderBloc>().currentOrder.status);
+    print('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO');
+    print('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO');
+    print('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO');
+
     if (!(context.read<CarOrderBloc>().state is CarOrderStatePlanAnother))
       order = context.read<CarOrderBloc>().currentOrder;
 

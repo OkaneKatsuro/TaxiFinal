@@ -149,17 +149,40 @@ class _ChatsPageState extends State<ChatsPage> {
                             child: Text(e.value.substring(0, 1)),
                           ),
                           SizedBox(width: 10),
-                          Column(
+                        Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(e.value),
-                              Text(
-                                lastMess[nm]?.message ?? '',
-                                style: h12w400BlackWithOpacity,
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    children: [
+
+                                      Row(
+                                        children: [
+                                          Text(
+                                            (e.value.split(' ').elementAt(0) ?? ''),
+                                          ),
+                                          SizedBox(width: 5),
+                                          Text(
+                                            (e.value.split(' ').elementAt(1) ?? ''),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+
+                                ],
                               ),
-                            ],
-                          )
+              Text(
+              lastMess[nm]?.message ?? '',
+              style: h12w400BlackWithOpacity,
+              ),
+              ],
+              )
+
                         ],
                       ),
                     ),

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 
@@ -36,6 +37,7 @@ class OneChatPage extends StatefulWidget {
   State<OneChatPage> createState() => _OneChatPageState();
 }
 
+
 class _OneChatPageState extends State<OneChatPage> with WidgetsBindingObserver {
   late TextEditingController comment;
   late StreamSubscription<QuerySnapshot>? s;
@@ -46,6 +48,8 @@ class _OneChatPageState extends State<OneChatPage> with WidgetsBindingObserver {
   late String message = '';
   late bool isWaiting = false;
 
+  final ScrollController _scrollController = ScrollController(); // Создаем экземпляр ScrollController
+
   @override
   void initState() {
     super.initState();
@@ -55,35 +59,20 @@ class _OneChatPageState extends State<OneChatPage> with WidgetsBindingObserver {
         text: context.read<RouteFromToCubit>().get().comment ?? '');
 
     textcontroller = TextEditingController();
+
+    // Добавляем слушатель для изменения размера виджета
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      SystemChannels.textInput.invokeMethod('TextInput.hide'); // Скрываем клавиатуру
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent); // Прокручиваем внизу
+    });
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance?.removeObserver(this);
-    //s?.cancel();
     textcontroller.dispose();
+    _scrollController.dispose();
     super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.resumed) {
-      print("App Resumed");
-      // Handle app resumed state
-    }
-  }
-
-  Future<void> _loadSentMessages() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      sentMessagesDate = prefs.getStringList('sent_messages')?.map((str) => int.parse(str))?.toList() ?? [];
-    });
-  }
-
-  Future<void> _saveSentMessages() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setStringList('sent_messages', sentMessagesDate.map((date) => date.toString()).toList());
   }
 
   @override
@@ -93,6 +82,7 @@ class _OneChatPageState extends State<OneChatPage> with WidgetsBindingObserver {
       body: SafeArea(
         child: Column(
           children: [
+
             Container(
               alignment: Alignment.bottomLeft,
               width: double.infinity,
@@ -136,7 +126,11 @@ class _OneChatPageState extends State<OneChatPage> with WidgetsBindingObserver {
                     // Handle new messages here and send notifications if needed
                     handleNewMessages(messages);
 
+                    // Прокручиваем список вниз после обновления сообщений
+
+
                     return ListView.builder(
+                      controller: _scrollController, // Присваиваем ScrollController
                       itemCount: messages.length,
                       itemBuilder: (context, index) {
                         final e = messages[index];
@@ -281,34 +275,35 @@ class _OneChatPageState extends State<OneChatPage> with WidgetsBindingObserver {
             message: lastM.message,
           );
           sentMessagesDate.add(lastM.date);
-          _saveSentMessages();
+          //_saveSentMessages();
           print(sentMessagesDate);
+          setState(() {}); // Обновить виджет после получения нового сообщения
         }
       }
     }
   }
 
   Future<void> _handleSendMessage(Message message) async {
-    // Ваш код для отправки сообщения
+    //  код для отправки сообщения
     await sendMessage(
       passId: widget.passId,
       driverId: widget.driverId,
       message: message,
     );
 
-    // Получите идентификатор собеседника (OneSignal playerId)
     String playerId = widget.oneId;
 
-    // Отправьте уведомление с помощью OneSignal
     await sendNotification(
       [playerId], // Список идентификаторов получателей
       message.message, // Текст уведомления
-      'Новое сообщение', // Заголовок уведомления
+      message.senderName, // Заголовок уведомления
     );
+
+    setState(() {}); // Обновить виджет после отправки сообщения
   }
 
   Future<void> sendNotification(List<String> tokenIdList, String contents, String heading) async {
-    final String kAppId = "7de32efb-d1ad-4b37-91c0-de5f453264cc";
+    final String kAppId = "44659ce6-937c-4e6f-a97c-9893a3ed5f02";
     final String oneSignalUrl = 'https://onesignal.com/api/v1/notifications';
 
     try {
@@ -330,7 +325,7 @@ class _OneChatPageState extends State<OneChatPage> with WidgetsBindingObserver {
           "include_player_ids": tokenIdList,
           "android_accent_color": "FF9976D2",
           "small_icon": "ic_stat_onesignal_default",
-          "large_icon": "https://www.filepicker.io/api/file/zPloHSmnQsix82nlj9Aj?filename=name.jpg",
+          "large_icon": "https://i.ibb.co/DRNmm9Y/icon.png",
           "headings": {"en": heading},
           "contents": {"en": contents},
         }),

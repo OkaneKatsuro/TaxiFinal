@@ -25,15 +25,13 @@ void main() async {
 
   HydratedBloc.storage = await HydratedStorage.build(
       storageDirectory: await getApplicationDocumentsDirectory());
+  OneSignal.initialize('44659ce6-937c-4e6f-a97c-9893a3ed5f02');
+  runApp(const MyApp());
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
-
-
-  OneSignal.initialize('7de32efb-d1ad-4b37-91c0-de5f453264cc');
   OneSignal.Notifications.requestPermission(true);
-  runApp(const MyApp());
+
 }
 
 class MyApp extends StatelessWidget {

@@ -67,9 +67,14 @@ Future<void> saveUserToFireBase({
 }) async {
   // Получение OneSignal ID
   String? oneId = OneSignal.User.pushSubscription.id;
+  print (oneId);
+  print (oneId);
+  print (oneId);
+  print (oneId);
+  print (oneId);
+  print (oneId);
 
   // Запись OneSignal ID в Firebase
-  OneSignal.login(uid);
   var docs = await FirebaseFirestore.instance.collection('users');
   String phone1 = phone.replaceAll(RegExp(r'[() ]'), '');
   var check = await docs.doc(uid).get();
@@ -82,7 +87,7 @@ Future<void> saveUserToFireBase({
       'phone': phone1,
       'is_pass': ispass,
       'addr_json': addrJson,
-      'oneId': oneId ?? '',
+      'oneId': oneId,
     });
     var check = await docs.doc(uid).get();
     print('after update');
@@ -95,7 +100,7 @@ Future<void> saveUserToFireBase({
       's_name': sname,
       'phone': phone1,
       'is_pass': ispass,
-      'oneId': oneId ?? '',
+      'oneId': oneId,
     });
   }
   return;
