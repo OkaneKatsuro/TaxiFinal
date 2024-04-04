@@ -28,6 +28,7 @@ import '../widgets/car_status.dart';
 import '../widgets/driving_map_pass_container.dart';
 import '../widgets/map_container.dart';
 import '../widgets/maps/res/functions.dart';
+import 'package:cars/pages/video_player_page.dart';
 
 
 class PassHomePage extends StatefulWidget {
@@ -160,7 +161,7 @@ class _PassHomePageState extends State<PassHomePage> {
       floatingActionButton: VideoButton(
         onPressed: () {
           Get.to(() => VideoPlayerPage());
-        },
+        }, mapKey: mapKey, mapDriverKey: mapDriverKey,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndDocked,
       body: ExpandableBottomSheet(
