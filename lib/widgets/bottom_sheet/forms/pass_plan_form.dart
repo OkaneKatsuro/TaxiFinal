@@ -404,7 +404,7 @@ class _PassPlanFormState extends State<PassPlanForm> {
                             null ||
                         context.watch<CarOrderBloc>().currentOrder.isCarFree ==
                             false
-                    ? 'Запланировть поездку'
+                    ? 'Запланировать поездку'
                     : 'Заказать машину',
               ),
             ),

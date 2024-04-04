@@ -12,6 +12,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
+import 'notification_services.dart';
+
 Future<CarOrder?> orderNow(BuildContext context) async {
   var date = context.read<CarOrderBloc>().currentOrder.startDate == null
       ? DateTime.now()
@@ -38,6 +40,7 @@ Future<CarOrder?> orderNow(BuildContext context) async {
   context.read<CarOrderBloc>().currentOrder.passId =
       context.read<CarOrderBloc>().user.getUser()!.id;
 
+
   var order = context.read<CarOrderBloc>().currentOrder;
 
   //проверка занята ли машина в наше время во всех заказах
@@ -55,6 +58,9 @@ Future<CarOrder?> orderNow(BuildContext context) async {
         .collection('orders')
         .doc(id)
         .set(context.read<CarOrderBloc>().currentOrder.toJson());
+    var passName = context.read<CarOrderBloc>().user.getUser()!.name;
+    var passFName = context.read<CarOrderBloc>().user.getUser()!.fname;
+    await sendNotificationToDriver(passName : passName, passFName : passFName);
     return null;
   } else {
     return CarOrder.fromJson(otherOrder);
@@ -191,6 +197,7 @@ Future<Map<String, dynamic>?> checkOrdersBeforePlane(CarOrder order) async {
 }
 
 Future<void> deleteOrderById(String id) async {
+
   print(id);
   await FirebaseFirestore.instance.collection('orders').doc(id).delete();
 

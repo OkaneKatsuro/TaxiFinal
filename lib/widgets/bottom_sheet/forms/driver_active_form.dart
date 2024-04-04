@@ -26,6 +26,7 @@ import '../../../models/car_order.dart';
 import '../../../pages/comment_page.dart';
 import '../../../pages/search_page.dart';
 
+import '../../../res/notification_services.dart';
 import '../../buttons/button3.dart';
 import '../../dialogs/select_date_dialog.dart';
 import '../../maps/order_form/address_input_filed_v2.dart';
@@ -115,9 +116,10 @@ class _DriverActiveFormState extends State<DriverActiveForm> {
                           isWaiting = true;
                         });
                         Navigator.pop(context, 'OK');
-
+                        var passId = context.read<RouteFromToCubit>().get().passId;
                         await finishOrder(
                             carOrder: context.read<RouteFromToCubit>().get());
+                        sendNotificationToPassCancel(userId: passId);
 
                         Get.offAll(() => DriverHomePage());
                       },

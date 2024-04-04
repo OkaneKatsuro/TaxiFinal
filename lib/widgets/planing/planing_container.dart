@@ -40,6 +40,7 @@ class PlaningContainer extends StatefulWidget {
 class _PlaningContainerState extends State<PlaningContainer> {
   bool isWaiting = false;
   bool isOpen = false;
+
   @override
   Widget build(BuildContext context) {
     DateTime checkedTime = widget.startDate;
@@ -48,26 +49,26 @@ class _PlaningContainerState extends State<PlaningContainer> {
     if ((currentTime.year == checkedTime.year) &&
         (currentTime.month == checkedTime.month) &&
         (currentTime.day == checkedTime.day)) {
-      date = 'Сегодня  (' +
-          DateFormat('hh:mm, dd MMM').format(widget.startDate) +
+      date = 'Сегодня (' +
+          DateFormat('hh:mm').format(widget.startDate) +
           ' - ' +
-          DateFormat('hh:mm, dd MMM').format(widget.endDate) +
+          DateFormat('hh:mm').format(widget.endDate) +
           ')';
     } else if ((currentTime.year == checkedTime.year) &&
         (currentTime.month == checkedTime.month)) {
       if ((currentTime.day - checkedTime.day) == 1) {
       } else if ((currentTime.day - checkedTime.day) == -1) {
-        date = 'Завтра  (' +
-            DateFormat('hh:mm, dd MMM').format(widget.startDate) +
+        date = 'Завтра (' +
+            DateFormat('hh:mm').format(widget.startDate) +
             ' - ' +
-            DateFormat('hh:mm, dd MMM').format(widget.endDate) +
+            DateFormat('hh:mm').format(widget.endDate) +
             ')';
       } else {}
     }
     String routeStr = '';
-    routeStr = widget.route.first.name ?? widget.route.first.description!;
+    routeStr = (widget.route.first.name ?? widget.route.first.description!) ?? '';
     for (var i = 1; i < widget.route.length; i++) {
-      routeStr += '→' + widget.route[i].name ?? widget.route[i].description!;
+      routeStr += '→' + (widget.route[i].name ?? widget.route[i].description!) ?? '';
     }
     return InkWell(
       onTap: () {
@@ -141,105 +142,114 @@ class _PlaningContainerState extends State<PlaningContainer> {
                 ],
               ),
               padding:
-                  EdgeInsets.only(top: 15, left: 10, right: 15, bottom: 10),
+              EdgeInsets.only(top: 15, left: 10, right: 15, bottom: 10),
               child: isWaiting
                   ? Container(
-                      height: 100,
-                      alignment: Alignment.center,
-                      child: CircularProgressIndicator(),
-                    )
+                height: 100,
+                alignment: Alignment.center,
+                child: CircularProgressIndicator(),
+              )
                   : Column(
-                      children: [
-                        Row(
-                          children: [
-                            SizedBox(width: 10),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      SizedBox(width: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            child: Row(
+                              crossAxisAlignment:
+                              CrossAxisAlignment.center,
                               children: [
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Text('        дата: ',
-                                          style: h13w500Black),
-                                      Text(
-                                          '${date != '' ? date : '${DateFormat('hh:mm, dd MMM').format(widget.startDate)} - ${DateFormat('hh:mm, dd MMM').format(widget.endDate)}'}',
-                                          style: h13w400Black),
-                                    ],
-                                  ),
-                                ),
-                                if (widget.name != '') SizedBox(height: 8),
-                                if (widget.name != '')
-                                  Container(
-                                    alignment: Alignment.centerLeft,
-                                    padding: const EdgeInsets.only(left: 10),
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                            context
-                                                        .read<UserCubit>()
-                                                        .getUser()!
-                                                        .role ==
-                                                    Role.pass
-                                                ? 'водитель: '
-                                                : 'пассажир: ',
-                                            style: h13w500Black),
-                                        Text(widget.name, style: h13w400Black),
-                                      ],
-                                    ),
-                                  ),
-                                SizedBox(height: 8),
-                                Container(
-                                  alignment: Alignment.topLeft,
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text('маршрут:  ', style: h13w500Black),
-                                      Container(
-                                        width:
-                                            MediaQuery.of(context).size.width -
-                                                150,
-                                        child:
-                                            Text(routeStr, style: h13w400Black),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(height: 10),
-                                if (widget.comment != '')
-                                  Container(
-                                    alignment: Alignment.topLeft,
-                                    padding: const EdgeInsets.only(left: 0),
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text('комментарий:  ',
-                                            style: h13w500Black),
-                                        Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width -
-                                              250,
-                                          height: isOpen ? null : 20,
-                                          child: Text(widget.comment,
-                                              style: h13w400Black),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                SizedBox(height: 10),
+                                Text('дата: ',
+                                    style: h13w500Black),
+                                Text(
+                                    '${date != '' ? date : '${DateFormat('hh:mm, dd MMM').format(widget.startDate)} - ${DateFormat('hh:mm, dd MMM').format(widget.endDate)}'}',
+                                    style: h13w400Black),
                               ],
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
+                          ),
+                          if (widget.name != '') SizedBox(height: 8),
+                          if (widget.name != '')
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Row(
+                                children: [
+                                  Text(
+                                      context
+                                          .read<UserCubit>()
+                                          .getUser()!
+                                          .role ==
+                                          Role.pass
+                                          ? 'водитель: '
+                                          : 'пассажир: ',
+                                      style: h13w500Black),
+                                  Text(widget.name, style: h13w400Black),
+                                ],
+                              ),
+                            ),
+                          SizedBox(height: 8),
+                          Container(
+                            alignment: Alignment.topLeft,
+                            padding: const EdgeInsets.only(left: 10),
+                            width: 250, // Ограничиваем ширину контейнера
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('маршрут:  ', style: h13w500Black),
+                                SizedBox(height: 4),
+                                Row(
+                                  children: [
+                                    Flexible(
+                                      child: Text(
+                                        routeStr,
+                                        style: h13w400Black,
+                                        overflow: TextOverflow.ellipsis,
+                                        softWrap: true,
+                                        maxLines: 2, // Ограничиваем количество строк
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+
+
+                          SizedBox(height: 10),
+                          if (widget.comment != '')
+                            Container(
+                              alignment: Alignment.topLeft,
+                              padding: const EdgeInsets.only(left: 0),
+                              child: Row(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
+                                  Text('комментарий:  ',
+                                      style: h13w500Black),
+                                  Container(
+                                    width: MediaQuery.of(context)
+                                        .size
+                                        .width -
+                                        250,
+                                    height: isOpen ? null : 20,
+                                    child: Text(widget.comment,
+                                        style: h13w400Black),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          SizedBox(height: 10),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
             if (!widget.isHistory &&
                 context.read<UserCubit>().getUser()!.role == Role.pass)
@@ -274,7 +284,7 @@ class _PlaningContainerState extends State<PlaningContainer> {
                   )),
             if (widget.comment != '')
               Positioned(
-                  //  right: 30,
+                //  right: 30,
                   bottom: 0,
                   child: Row(
                     children: [
@@ -287,15 +297,15 @@ class _PlaningContainerState extends State<PlaningContainer> {
                         },
                         child: isOpen
                             ? Icon(
-                                Icons.arrow_drop_up_outlined,
-                                color: black,
-                                size: 35,
-                              )
+                          Icons.arrow_drop_up_outlined,
+                          color: black,
+                          size: 35,
+                        )
                             : Icon(
-                                Icons.arrow_drop_down_outlined,
-                                color: black,
-                                size: 35,
-                              ),
+                          Icons.arrow_drop_down_outlined,
+                          color: black,
+                          size: 35,
+                        ),
                       ),
                     ],
                   )),

@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import '../../bloc/car_order_bloc/car_order_bloc.dart';
 import '../../bloc/route_from_to/route_from_to.dart';
 import '../../pages/driver_home_page.dart';
+import '../../res/notification_services.dart';
 import '../../res/odder_functions.dart';
 import '../../res/styles.dart';
 import '../buttons/button2.dart';
@@ -61,20 +62,24 @@ class _PassBottomActiveState extends State<PassBottomActive> {
                         ),
                         TextButton(
                           onPressed: () async {
-                            //Начать выполненение
+                            // Начать выполнение
                             Navigator.pop(context, 'OK');
                             setState(() {
                               isWaiting = true;
                             });
-                            context.read<CarOrderBloc>().currentOrder.comment =
-                                'Отменено пассажиром';
-                            await finishOrder(
-                                carOrder:
-                                    context.read<CarOrderBloc>().currentOrder);
+                            context.read<CarOrderBloc>().currentOrder.comment = 'Отменено пассажиром';
+                            var driverid = context.read<CarOrderBloc>().currentOrder.driverId;
 
-                            context
-                                .read<CarOrderBloc>()
-                                .add(CarOrderEvent.stop());
+                            // Завершаем заказ
+                            await finishOrder(
+                              carOrder: context.read<CarOrderBloc>().currentOrder,
+                            );
+
+                            // Отправляем уведомление водителю после завершения заказа
+                            await sendNotificationToDriverCancel(driverId: driverid);
+
+                            // Останавливаем обработку заказа и переходим на домашнюю страницу пассажира
+                            context.read<CarOrderBloc>().add(CarOrderEvent.stop());
                             Get.offAll(() => PassHomePage());
                           },
                           child: const Text('Да, Отменить'),

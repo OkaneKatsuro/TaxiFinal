@@ -21,6 +21,7 @@ class Car {
   String toplevo = '';
   String moto = '';
   String probeg = '';
+  String parkTime='';
 }
 
 //var car = Car(lat: 47.255171, long: 39.708543, status: true); - rostov
@@ -39,6 +40,7 @@ final url = 'https://web.fort-monitor.ru/api/integration/v1/connect?login=fratel
 
 Future<bool> updateCarLocation() async {
   try {
+
     var dio = Dio();
     var cookieJar = CookieJar();
     dio.interceptors.add(CookieManager(cookieJar));
@@ -47,7 +49,7 @@ Future<bool> updateCarLocation() async {
     if (res.statusCode == 200) {
       res = await dio.get(
           'https://web.fort-monitor.ru/api/integration/v1/gettree?all=true');
-      print(res);
+
 
       if (res.statusCode == 200) {
         var data = res.data;
@@ -66,26 +68,58 @@ Future<bool> updateCarLocation() async {
           print(car.long);
           print(id);
 
-
-          res = await dio.get(
-              'https://web.fort-monitor.ru/api/integration/v1/objectinfo?oid=$id&dt=${DateFormat('yyyy-MM-dd').format(DateTime.now().add(Duration(days: 2)))}');
-
-          if (res.statusCode == 200) {
-            var sensors = res.data['sensors'];
-            if (sensors != null && sensors.length > 7) {
-              car.zajiganie = sensors[7]['val'].toString().substring(2);
-              car.temp = sensors[1]['val'];
-              car.toplevo = sensors[5]['val'];
-              car.moto = sensors[8]['vwal'];
-              car.probeg = sensors[14]['val'];
-              return true;
-            }
-          }
         }
       }
+
     }
   } catch (e) {
-    print('Ошибка: $e');
+    print('Ошибка1: $e');
   }
   return false;
+}
+
+
+Future<bool> carStatUpdate() async {
+  try{
+    var dio = Dio();
+    var cookieJar = CookieJar();
+    dio.interceptors.add(CookieManager(cookieJar));
+    var res = await dio.get(url);
+
+
+      res = await dio.get(
+          'https://web.fort-monitor.ru/api/integration/v1/objectinfo?oid=98681');
+
+      if (res.statusCode == 200) {
+
+        var sensors = res.data['sensors'];
+        print(sensors);
+        if (sensors != null && sensors.length > 7) {
+          car.zajiganie = sensors[15]['val'].toString().substring(2);
+          print('AAAAAA');
+          print(car.zajiganie);
+          car.temp = sensors[5]['val'];
+          print('BBBBBB');
+          print(car.temp);
+          car.toplevo = sensors[11]['val'];
+          print('CCCCCC');
+          print(car.toplevo);
+          car.moto = sensors[17]['val'];
+          print('EEEEE');
+          print(car.moto);
+          car.probeg = sensors[25]['val'];
+          print('DDDDDDD');
+          print(car.probeg);
+          car.parkTime = sensors[0]['val'];
+          print('FFFFF');
+          print(car.parkTime);
+          return true;
+        }
+      }
+  }
+  catch (e) {
+    print('Ошибка2: $e');
+  }
+  return false;
+
 }
