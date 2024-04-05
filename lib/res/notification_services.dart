@@ -1,6 +1,10 @@
 import 'dart:convert';
+import 'package:cars/pages/plan_page.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import '../bloc/user/user_cubit.dart';
 
@@ -120,7 +124,7 @@ Future<void> sendNotificationToDriverCancel({required String? driverId}) async {
         "android_accent_color": "FF9976D2",
         "small_icon": "ic_stat_onesignal_default",
         "large_icon": "https://i.ibb.co/DRNmm9Y/icon.png",
-        "headings": {"en": 'Отмена Поездки !'},
+        "headings": {"en": 'Отмена Поездки!'},
         "contents": {"en": ' $userName отменил заказ!'},
       }),
     );
@@ -244,7 +248,7 @@ Future<void> sendNotificationToDriverCancelFromList() async {
         "android_accent_color": "FF9976D2",
         "small_icon": "ic_stat_onesignal_default",
         "large_icon": "https://i.ibb.co/DRNmm9Y/icon.png",
-        "headings": {"en": 'Новый заказ!'},
+        "headings": {"en": 'Отмена запланированной поездки!'},
         "contents": {"en": ' $userName отменил запланированную поездку!'},
       }),
     );
@@ -333,6 +337,22 @@ Future<void> sendNotificationToPassStartOrder({required String? orderId}) async 
     throw e;
   }
 }
+
+
+void handleOneSignalNotification(OSNotificationClickEvent event) {
+  print('Received OneSignal notification:');
+  print('Notification ID: ${event.notification.notificationId}');
+  print('Title: ${event.notification.title}');
+  print('Additional Data: ${event.notification.additionalData}');
+
+  // Получаем заголовок уведомления
+  String? title = event.notification.title;
+
+  // Определяем, какую страницу открыть в зависимости от заголовка
+  if (title == 'Отмена запланированной поездки!') {
+    Get.to(PlanPage());
+  }
+  }
 
 
 

@@ -7,6 +7,7 @@ import 'package:cars/bloc/live_search_bloc/live_search_bloc.dart';
 import 'package:cars/pages/chats_page.dart';
 import 'package:cars/pages/loading_page.dart';
 import 'package:cars/repository/repo.dart';
+import 'package:cars/res/notification_services.dart';
 import 'package:cars/res/styles.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,8 +32,11 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   OneSignal.Notifications.requestPermission(true);
-
+  OneSignalNotifications().addClickListener(handleOneSignalNotification);
 }
+
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key});
