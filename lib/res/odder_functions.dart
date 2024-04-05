@@ -60,7 +60,7 @@ Future<CarOrder?> orderNow(BuildContext context) async {
         .set(context.read<CarOrderBloc>().currentOrder.toJson());
     var passName = context.read<CarOrderBloc>().user.getUser()!.name;
     var passFName = context.read<CarOrderBloc>().user.getUser()!.fname;
-    await sendNotificationToDriver(passName : passName, passFName : passFName);
+
     return null;
   } else {
     return CarOrder.fromJson(otherOrder);

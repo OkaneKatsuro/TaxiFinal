@@ -27,6 +27,7 @@ import 'package:intl/intl.dart';
 import '../../../models/car_order.dart';
 import '../../../pages/comment_page.dart';
 import '../../../pages/search_page.dart';
+import '../../../res/notification_services.dart';
 import '../../../res/utils.dart';
 import '../../buttons/button1.dart';
 import '../../buttons/button3.dart';
@@ -360,6 +361,7 @@ class _PassPlanFormState extends State<PassPlanForm> {
 
                   if (res == null) {
                     context.read<CarOrderBloc>().add(CarOrderEvent.start());
+                    await sendNotificationToDriver();
                   } else {
                     planedBad(
                       context,
@@ -372,9 +374,10 @@ class _PassPlanFormState extends State<PassPlanForm> {
                 } else if (order.startDate != null) {
                   var res = await orderNow(context);
                   if (res == null) {
-                    planedOk(context, () {
+                    planedOk(context, () async {
                       context.read<CarOrderBloc>().add(CarOrderEvent.stop());
                       Get.offAll(() => PassHomePage());
+                      await sendNotificationToDriverPlaning();
                     });
                   } else {
                     planedBad(

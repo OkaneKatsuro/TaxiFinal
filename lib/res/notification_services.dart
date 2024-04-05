@@ -10,7 +10,68 @@ import '../bloc/user/user_cubit.dart';
 
 final userCubit = UserCubit();
 
-Future<void> sendNotificationToDriver({required String passName, required String passFName}) async {
+Future<void> sendNotificationToDriverPlaning() async {
+  final currentUser = userCubit.getUser();
+  String? userName; // Объявляем переменную userName здесь, чтобы она была доступна во всей функции
+
+  if (currentUser != null) {
+    userName = currentUser.name; // Получение имени текущего пользователя
+    print('Имя текущего пользователя: $userName');
+  } else {
+    print('Текущий пользователь не найден.');
+  }
+
+  List<String> oneSignalIds = [];
+  final String kAppId = "44659ce6-937c-4e6f-a97c-9893a3ed5f02"; // Замените на свой App ID OneSignal
+  final String oneSignalUrl = 'https://onesignal.com/api/v1/notifications';
+
+
+  QuerySnapshot<Map<String, dynamic>> usersSnapshot =
+  await FirebaseFirestore.instance
+      .collection('users')
+      .where('is_pass', isEqualTo: false)
+      .get();
+
+  for (QueryDocumentSnapshot<Map<String, dynamic>> userSnapshot
+  in usersSnapshot.docs) {
+    String? oneSignalId = userSnapshot.data()['oneId'];
+    if (oneSignalId != null && oneSignalId.isNotEmpty) {
+      oneSignalIds.add(oneSignalId);
+    }
+  }
+
+  try {
+    print('00000000000000000000');
+    print('отправка ');
+    print(kAppId,);
+    print(oneSignalIds);
+    print(userName);
+
+    print('ХХХХХХХХХХХХХХХХХХХХ');
+    print('00000000000000');
+
+    await http.post(
+      Uri.parse(oneSignalUrl),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+
+      },
+      body: jsonEncode(<String, dynamic>{
+        "app_id": kAppId,
+        "include_player_ids": oneSignalIds,
+        "android_accent_color": "FF9976D2",
+        "small_icon": "ic_stat_onesignal_default",
+        "large_icon": "https://i.ibb.co/DRNmm9Y/icon.png",
+        "headings": {"en": 'Запланирована новая поездка!'},
+        "contents": {"en": '$userName создал новый заказ. Проверьте и подтвердите.'},
+      }),
+    );
+  } catch (e) {
+    print('Error sending notification: $e');
+    throw e;
+  }
+}
+Future<void> sendNotificationToDriver() async {
   final currentUser = userCubit.getUser();
   String? userName; // Объявляем переменную userName здесь, чтобы она была доступна во всей функции
 
@@ -63,7 +124,7 @@ Future<void> sendNotificationToDriver({required String passName, required String
         "small_icon": "ic_stat_onesignal_default",
         "large_icon": "https://i.ibb.co/DRNmm9Y/icon.png",
         "headings": {"en": 'Новый заказ!'},
-        "contents": {"en": ' $userName создал новый заказ. Проверьте и подтвердите.'},
+        "contents": {"en": '$userName создал новый заказ. Проверьте и подтвердите.'},
       }),
     );
   } catch (e) {
@@ -249,7 +310,7 @@ Future<void> sendNotificationToDriverCancelFromList() async {
         "small_icon": "ic_stat_onesignal_default",
         "large_icon": "https://i.ibb.co/DRNmm9Y/icon.png",
         "headings": {"en": 'Отмена запланированной поездки!'},
-        "contents": {"en": ' $userName отменил запланированную поездку!'},
+        "contents": {"en": '$userName отменил запланированную поездку!'},
       }),
     );
   } catch (e) {
@@ -349,9 +410,10 @@ void handleOneSignalNotification(OSNotificationClickEvent event) {
   String? title = event.notification.title;
 
   // Определяем, какую страницу открыть в зависимости от заголовка
-  if (title == 'Отмена запланированной поездки!') {
+  if (title == 'Отмена запланированной поездки!' || title == 'Запланирована новая поездка!' ) {
     Get.to(PlanPage());
   }
+
   }
 
 
