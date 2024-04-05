@@ -85,6 +85,7 @@ class UserCubit extends HydratedCubit<CarUser?> {
     String id = json['id'];
     String name = json['name'];
     String phone = json['phone'];
+    String onId = json['oneId'];
     List<Map<String, Place>> list = [];
     try {
       String addressList = json['addressList'];
@@ -100,6 +101,7 @@ class UserCubit extends HydratedCubit<CarUser?> {
     }
 
     var user = CarUser(
+      oneId: json['oneId'],
       role: role,
       id: id,
       name: name,
@@ -141,6 +143,7 @@ class UserCubit extends HydratedCubit<CarUser?> {
       );
 
       return {
+        'oneId': state.oneId,
         'role': state!.role.name,
         'id': state.id,
         'name': state.name,

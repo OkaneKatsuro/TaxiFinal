@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
+import '../../res/notification_services.dart';
 import '../../res/styles.dart';
 
 class PlaningContainer extends StatefulWidget {
@@ -261,8 +262,10 @@ class _PlaningContainerState extends State<PlaningContainer> {
                       SizedBox(width: 10),
                       InkWell(
                         onTap: () async {
+                          sendNotificationToDriverCancelFromList();
                           setState(() {
                             isWaiting = true;
+
                           });
                           await deleteOrderById(widget.orderId!);
                           setState(() {

@@ -24,6 +24,7 @@ import '../../../models/car_order.dart';
 import '../../../pages/comment_page.dart';
 import '../../../pages/search_page.dart';
 
+import '../../../res/notification_services.dart';
 import '../../buttons/button3.dart';
 import '../../dialogs/comment_dialog.dart';
 import '../../dialogs/select_date_dialog.dart';
@@ -293,6 +294,7 @@ class _DriverOrderFormState extends State<DriverOrderForm> {
                                 .get()
                                 .lengthSec!)));
                     orderConfirm(context);
+
                     context
                         .read<RouteFromToCubit>()
                         .set(CarOrder(status: CarOrderStatus.waiting));
@@ -310,12 +312,14 @@ class _DriverOrderFormState extends State<DriverOrderForm> {
                     // showBadOrderMessage(context, CarOrder.fromJson(res));
                     print(res);
                   }
+
                 }();
               } else {
                 context
                     .read<RouteFromToCubit>()
                     .setStatus(CarOrderStatus.active);
                 orderConfirm(context);
+
               }
               setState(() {
                 isWaiting = false;

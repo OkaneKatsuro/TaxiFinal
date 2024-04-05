@@ -119,7 +119,7 @@ class _DriverActiveFormState extends State<DriverActiveForm> {
                         var passId = context.read<RouteFromToCubit>().get().passId;
                         await finishOrder(
                             carOrder: context.read<RouteFromToCubit>().get());
-                        sendNotificationToPassCancel(userId: passId);
+
 
                         Get.offAll(() => DriverHomePage());
                       },

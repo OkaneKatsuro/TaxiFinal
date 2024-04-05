@@ -67,7 +67,7 @@ Future<CarOrder?> orderNow(BuildContext context) async {
   }
 }
 
-orderConfirm(BuildContext context) {
+orderConfirm(BuildContext context) async {
   var id = context.read<RouteFromToCubit>().get().id;
 
   context.read<RouteFromToCubit>().setDriverName(
@@ -76,7 +76,8 @@ orderConfirm(BuildContext context) {
           context.read<UserCubit>().getUser()!.lname);
   var order = context.read<RouteFromToCubit>().get();
   order.driverId = context.read<UserCubit>().getUser()!.id;
-  FirebaseFirestore.instance.collection('orders').doc(id).set(order.toJson());
+  await FirebaseFirestore.instance.collection('orders').doc(id).set(order.toJson());
+  await sendNotificationToPassStartOrder(orderId: id);
 }
 
 Future<Map<String, dynamic>?> getFirstWaitingOrder() async {

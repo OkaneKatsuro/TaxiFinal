@@ -15,6 +15,7 @@ class CarOrder {
   String? passName;
   String? id;
   String? passId;
+  String? oneId;
   String? driverId;
   bool? isCarFree;
   int? arriveTime;
@@ -30,6 +31,7 @@ class CarOrder {
     this.comment,
     required this.status,
     this.id,
+    this.oneId,
     this.passId,
     this.driverId,
     this.isCarFree,
@@ -62,6 +64,7 @@ class CarOrder {
       'driverId': driverId,
       'arriveTime': arriveTime,
       'backTime': backTime,
+      'oneId' : oneId,
     };
   }
 
