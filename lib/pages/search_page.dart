@@ -142,7 +142,7 @@ class _SearchPageState extends State<SearchPage> {
                               .add(LiveSearchEvent.fetch(text: val));
                         }
                       },
-                      hintText: showOnMap ? place : 'Ведите адрес',
+                      hintText: showOnMap ? place : 'Введите адрес',
                       icon: Container(
                         width: 5,
                         height: 5,
