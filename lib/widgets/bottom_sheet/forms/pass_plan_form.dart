@@ -380,6 +380,7 @@ class _PassPlanFormState extends State<PassPlanForm> {
                       await sendNotificationToDriverPlaning();
                     });
                   } else {
+                    await sendNotificationToDriver();
                     planedBad(
                       context,
                       () {

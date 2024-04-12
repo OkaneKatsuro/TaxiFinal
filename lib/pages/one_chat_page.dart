@@ -264,24 +264,32 @@ class _OneChatPageState extends State<OneChatPage> {
 }
 
 Future<void> sendNotification(List<String> tokenIdList, String contents, String heading) async {
-  final String kAppId = "44659ce6-937c-4e6f-a97c-9893a3ed5f02";
+  final String kAppId = "adf5890f-356b-4d68-a437-e2e1aea89f6d";
   final String oneSignalUrl = 'https://onesignal.com/api/v1/notifications';
+  final currentUser = userCubit.getUser();
 
   try {
+    var requestBody = jsonEncode(<String, dynamic>{
+      "app_id": kAppId,
+      "include_player_ids": tokenIdList,
+      "android_accent_color": "FF9976D2",
+      "small_icon": "ic_stat_onesignal_default",
+      "large_icon": "https://i.ibb.co/DRNmm9Y/icon.png",
+      "data": {"id": currentUser?.id, "oneId": currentUser?.oneId},
+      "headings": {"en": heading},
+      "contents": {"en": contents},
+      "id": currentUser?.id, // Добавляем id как часть дополнительных данных
+      "oneId": currentUser?.oneId, // Добавляем oneId как часть дополнительных данных
+    });
+
+    print('Request Body: $requestBody');
+
     await http.post(
       Uri.parse(oneSignalUrl),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, dynamic>{
-        "app_id": kAppId,
-        "include_player_ids": tokenIdList,
-        "android_accent_color": "FF9976D2",
-        "small_icon": "ic_stat_onesignal_default",
-        "large_icon": "https://i.ibb.co/DRNmm9Y/icon.png",
-        "headings": {"en": heading},
-        "contents": {"en": contents},
-      }),
+      body: requestBody,
     );
   } catch (e) {
     print('Error sending notification: $e');

@@ -294,7 +294,7 @@ class _OneChatPageState extends State<OneChatPage> with WidgetsBindingObserver {
   }
 
   Future<void> sendNotification(List<String> tokenIdList, String contents, String heading) async {
-    final String kAppId = "44659ce6-937c-4e6f-a97c-9893a3ed5f02";
+    final String kAppId = "adf5890f-356b-4d68-a437-e2e1aea89f6d";
     final String oneSignalUrl = 'https://onesignal.com/api/v1/notifications';
 
     try {

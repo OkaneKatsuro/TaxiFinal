@@ -26,7 +26,7 @@ void main() async {
 
   HydratedBloc.storage = await HydratedStorage.build(
       storageDirectory: await getApplicationDocumentsDirectory());
-  OneSignal.initialize('44659ce6-937c-4e6f-a97c-9893a3ed5f02');
+  OneSignal.initialize('adf5890f-356b-4d68-a437-e2e1aea89f6d');
   runApp(const MyApp());
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

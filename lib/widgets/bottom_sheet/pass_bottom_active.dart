@@ -40,7 +40,6 @@ class _PassBottomActiveState extends State<PassBottomActive> {
               InkWell(
                 onTap: () async {
                   context.read<CarOrderBloc>().add(CarOrderEvent.planAnother());
-                  await sendNotificationToDriverPlaning();
 
                 },
                 child: Button2(

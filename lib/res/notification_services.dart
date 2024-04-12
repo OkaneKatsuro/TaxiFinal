@@ -7,22 +7,24 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import '../bloc/user/user_cubit.dart';
+import '../models/role.dart';
+import '../pages/one_chat_page.dart';
 
 final userCubit = UserCubit();
 
 Future<void> sendNotificationToDriverPlaning() async {
   final currentUser = userCubit.getUser();
-  String? userName; // Объявляем переменную userName здесь, чтобы она была доступна во всей функции
+  String? userName;
 
   if (currentUser != null) {
-    userName = currentUser.name; // Получение имени текущего пользователя
+    userName = currentUser.name;
     print('Имя текущего пользователя: $userName');
   } else {
     print('Текущий пользователь не найден.');
   }
 
   List<String> oneSignalIds = [];
-  final String kAppId = "44659ce6-937c-4e6f-a97c-9893a3ed5f02"; // Замените на свой App ID OneSignal
+  final String kAppId = "adf5890f-356b-4d68-a437-e2e1aea89f6d";
   final String oneSignalUrl = 'https://onesignal.com/api/v1/notifications';
 
 
@@ -62,8 +64,8 @@ Future<void> sendNotificationToDriverPlaning() async {
         "android_accent_color": "FF9976D2",
         "small_icon": "ic_stat_onesignal_default",
         "large_icon": "https://i.ibb.co/DRNmm9Y/icon.png",
-        "headings": {"en": 'Запланирована новая поездка!'},
-        "contents": {"en": '$userName создал новый заказ. Проверьте и подтвердите.'},
+        "headings": {"en": 'Новый заказ запланирован!'},
+        "contents": {"en": 'Пассажир $userName запланировал новую поездку!'},
       }),
     );
   } catch (e) {
@@ -73,17 +75,17 @@ Future<void> sendNotificationToDriverPlaning() async {
 }
 Future<void> sendNotificationToDriver() async {
   final currentUser = userCubit.getUser();
-  String? userName; // Объявляем переменную userName здесь, чтобы она была доступна во всей функции
+  String? userName;
 
   if (currentUser != null) {
-    userName = currentUser.name; // Получение имени текущего пользователя
+    userName = currentUser.name;
     print('Имя текущего пользователя: $userName');
   } else {
     print('Текущий пользователь не найден.');
   }
 
   List<String> oneSignalIds = [];
-  final String kAppId = "44659ce6-937c-4e6f-a97c-9893a3ed5f02"; // Замените на свой App ID OneSignal
+  final String kAppId = "adf5890f-356b-4d68-a437-e2e1aea89f6d";
   final String oneSignalUrl = 'https://onesignal.com/api/v1/notifications';
 
 
@@ -135,17 +137,16 @@ Future<void> sendNotificationToDriver() async {
 
 Future<void> sendNotificationToDriverCancel({required String? driverId}) async {
   final currentUser = userCubit.getUser();
-  String? userName; // Объявляем переменную userName здесь, чтобы она была доступна во всей функции
-
+  String? userName;
   if (currentUser != null) {
-    userName = currentUser.name; // Получение имени текущего пользователя
+    userName = currentUser.name;
     print('Имя текущего пользователя: $userName');
   } else {
     print('Текущий пользователь не найден.');
   }
 
   List<String> oneSignalIds = [];
-  final String kAppId = "44659ce6-937c-4e6f-a97c-9893a3ed5f02"; // Замените на свой App ID OneSignal
+  final String kAppId = "adf5890f-356b-4d68-a437-e2e1aea89f6d";
   final String oneSignalUrl = 'https://onesignal.com/api/v1/notifications';
 
 
@@ -197,17 +198,17 @@ Future<void> sendNotificationToDriverCancel({required String? driverId}) async {
 
 Future<void> sendNotificationToPassCancel({required String? userId}) async {
   final currentUser = userCubit.getUser();
-  String? userName; // Объявляем переменную userName здесь, чтобы она была доступна во всей функции
+  String? userName;
 
   if (currentUser != null) {
-    userName = currentUser.name; // Получение имени текущего пользователя
+    userName = currentUser.name;
     print('Имя текущего пользователя: $userName');
   } else {
     print('Текущий пользователь не найден.');
   }
 
   List<String> oneSignalIds = [];
-  final String kAppId = "44659ce6-937c-4e6f-a97c-9893a3ed5f02"; // Замените на свой App ID OneSignal
+  final String kAppId = "adf5890f-356b-4d68-a437-e2e1aea89f6d";
   final String oneSignalUrl = 'https://onesignal.com/api/v1/notifications';
 
 
@@ -217,7 +218,7 @@ Future<void> sendNotificationToPassCancel({required String? userId}) async {
       .doc(userId)
       .get();
 
-  // Если документ существует и содержит поле oneId, добавляем его значение в список идентификаторов OneSignal
+
   if (userDocSnapshot.exists && userDocSnapshot.data() != null) {
     String? oneSignalId = userDocSnapshot.data()!['oneId'];
     if (oneSignalId != null && oneSignalId.isNotEmpty) {
@@ -230,7 +231,7 @@ Future<void> sendNotificationToPassCancel({required String? userId}) async {
     print('отправка отмены');
     print(kAppId,);
     print(oneSignalIds);
-    print('driver: $userId'); // Теперь userName доступна здесь
+    print('driver: $userId');
 
     print('ХХХХХХХХХХХХХХХХХХХХ');
     print('00000000000000');
@@ -262,14 +263,14 @@ Future<void> sendNotificationToDriverCancelFromList() async {
   String? userName;
 
   if (currentUser != null) {
-    userName = currentUser.name; // Получение имени текущего пользователя
+    userName = currentUser.name;
     print('Имя текущего пользователя: $userName');
   } else {
     print('Текущий пользователь не найден.');
   }
 
   List<String> oneSignalIds = [];
-  final String kAppId = "44659ce6-937c-4e6f-a97c-9893a3ed5f02"; // Замените на свой App ID OneSignal
+  final String kAppId = "adf5890f-356b-4d68-a437-e2e1aea89f6d";
   final String oneSignalUrl = 'https://onesignal.com/api/v1/notifications';
 
 
@@ -326,14 +327,14 @@ Future<void> sendNotificationToPassStartOrder({required String? orderId}) async 
 
   if (currentUser != null) {
     userName = currentUser.name;
-    userId = currentUser.id;// Получение имени текущего пользователя
+    userId = currentUser.id;
     print('Имя текущего пользователя: $userName');
   } else {
     print('Текущий пользователь не найден.');
   }
 
   List<String> oneSignalIds = [];
-  final String kAppId = "44659ce6-937c-4e6f-a97c-9893a3ed5f02"; // Замените на свой App ID OneSignal
+  final String kAppId = "adf5890f-356b-4d68-a437-e2e1aea89f6d";
   final String oneSignalUrl = 'https://onesignal.com/api/v1/notifications';
 
 
@@ -343,7 +344,7 @@ Future<void> sendNotificationToPassStartOrder({required String? orderId}) async 
 
   for (QueryDocumentSnapshot<Map<String, dynamic>> orderSnapshot
   in ordersSnapshot.docs) {
-    if (orderSnapshot.id == orderId) { // Проверяем, совпадает ли id заказа с переданным orderId
+    if (orderSnapshot.id == orderId) {
       String? passOrderId = orderSnapshot.data()['passId'];
       print('AUE$passOrderId');
       if (passOrderId != null && passOrderId.isNotEmpty) {
@@ -359,10 +360,10 @@ Future<void> sendNotificationToPassStartOrder({required String? orderId}) async 
             oneSignalIds.add(oneId);
           }
         } else {
-          // Документ с passId не найден
+
         }
       }
-      break; // Выходим из цикла, так как нашли нужный заказ
+      break;
     }
   }
 
@@ -406,15 +407,40 @@ void handleOneSignalNotification(OSNotificationClickEvent event) {
   print('Title: ${event.notification.title}');
   print('Additional Data: ${event.notification.additionalData}');
 
+  final currentUser = userCubit.getUser();
+
   // Получаем заголовок уведомления
   String? title = event.notification.title;
 
-  // Определяем, какую страницу открыть в зависимости от заголовка
+  // Получаем данные уведомления
+  Map<String, dynamic>? additionalData = event.notification.additionalData;
+
   if (title == 'Отмена запланированной поездки!' || title == 'Запланирована новая поездка!' ) {
     Get.to(PlanPage());
   }
+  if (additionalData != null ) {
+    String id = additionalData['id'];
+    String oneId = additionalData['oneId'];
 
+    // Вставляем полученные id в ваше условие
+    if (currentUser!.role == Role.pass) {
+      Get.to(OneChatPage(
+        passId: currentUser.id,
+        driverId: id,
+        oneId: oneId,
+      ));
+    } else {
+      Get.to(OneChatPage(
+        driverId: currentUser.id,
+        passId: id,
+        oneId: oneId,
+      ));
+    }
+  } else {
+    print('Notification data is empty or does not contain "id" key.');
   }
+}
+
 
 
 
