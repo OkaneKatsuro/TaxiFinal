@@ -17,29 +17,17 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -53,10 +41,49 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCEMWlXaOF0zbxoyGi7bEg9Len2LcmAfwc',
-    appId: '1:1085327918585:android:1b6682f8b0560bcc90a928',
-    messagingSenderId: '1085327918585',
-    projectId: 'bmmm-c6160',
-    storageBucket: 'bmmm-c6160.appspot.com',
+    apiKey: 'AIzaSyDdJnowKfuPB391-iycDGe-OuXbbo3J--I',
+    appId: '1:591099938047:android:7fe6d45f0ea6a6466ff8ca',
+    messagingSenderId: '591099938047',
+    projectId: 'baitekapp',
+    storageBucket: 'baitekapp.appspot.com',
   );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyCrJrNYAo1ElnYiNAI_Pot0yPrXVvKfnHA',
+    appId: '1:591099938047:web:1e4cc66a9648915a6ff8ca',
+    messagingSenderId: '591099938047',
+    projectId: 'baitekapp',
+    authDomain: 'baitekapp.firebaseapp.com',
+    storageBucket: 'baitekapp.appspot.com',
+    measurementId: 'G-56D8WNFZYM',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyCawX1Lw_AZhke6l-8yHVUY8KeNoZEPY0c',
+    appId: '1:591099938047:ios:71f284efd9349f406ff8ca',
+    messagingSenderId: '591099938047',
+    projectId: 'baitekapp',
+    storageBucket: 'baitekapp.appspot.com',
+    iosBundleId: 'com.example.taxifianal',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyCawX1Lw_AZhke6l-8yHVUY8KeNoZEPY0c',
+    appId: '1:591099938047:ios:71f284efd9349f406ff8ca',
+    messagingSenderId: '591099938047',
+    projectId: 'baitekapp',
+    storageBucket: 'baitekapp.appspot.com',
+    iosBundleId: 'com.example.taxifianal',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyCrJrNYAo1ElnYiNAI_Pot0yPrXVvKfnHA',
+    appId: '1:591099938047:web:59b0f555809f9d7e6ff8ca',
+    messagingSenderId: '591099938047',
+    projectId: 'baitekapp',
+    authDomain: 'baitekapp.firebaseapp.com',
+    storageBucket: 'baitekapp.appspot.com',
+    measurementId: 'G-6HFXNH362W',
+  );
+
 }
