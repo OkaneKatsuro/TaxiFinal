@@ -24,19 +24,20 @@ import 'package:path_provider/path_provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  HydratedBloc.storage = await HydratedStorage.build(
-      storageDirectory: await getApplicationDocumentsDirectory());
-  OneSignal.initialize('adf5890f-356b-4d68-a437-e2e1aea89f6d');
-  runApp(const MyApp());
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: await getApplicationDocumentsDirectory(),
+  );
+
+  OneSignal.initialize('adf5890f-356b-4d68-a437-e2e1aea89f6d');
   OneSignal.Notifications.requestPermission(true);
   OneSignalNotifications().addClickListener(handleOneSignalNotification);
+
+  runApp(const MyApp());
 }
-
-
-
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key});
@@ -98,7 +99,6 @@ class MyApp extends StatelessWidget {
             ),
             useMaterial3: true,
           ),
-
           home: LoadingPage(),
         ),
       ),
