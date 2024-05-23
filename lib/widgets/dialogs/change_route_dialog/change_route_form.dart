@@ -1,17 +1,9 @@
 import 'package:cars/bloc/route_from_to/route_from_to.dart';
-import 'package:cars/pages/pass_home_page.dart';
 
-import 'package:cars/widgets/buttons/button2.dart';
-
-import 'package:cars/widgets/other/my_divider.dart';
-import 'package:drag_and_drop_lists/drag_and_drop_item.dart';
-import 'package:drag_and_drop_lists/drag_and_drop_list.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 
-import '../../../res/styles.dart';
 import '../../change_route/change_route_item.dart';
 
 class ChangeRouteForm extends StatefulWidget {
