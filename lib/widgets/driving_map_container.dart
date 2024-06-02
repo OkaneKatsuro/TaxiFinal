@@ -17,7 +17,8 @@ import 'package:get/get.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 import '../bloc/position_bloc/position_bloc.dart';
-import '../models/car_order.dart';
+import 'package:cars/models/car_order.dart';
+
 import '../models/route_from_to.dart';
 import 'maps/car_point.dart';
 import 'maps/models/app_lat_long.dart';

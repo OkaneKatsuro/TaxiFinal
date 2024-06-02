@@ -1,8 +1,9 @@
+
 import 'package:cars/models/car_order.dart';
+import 'package:cars/models/place.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-  import '../../models/place.dart';
 
 class RouteFromToCubit extends Cubit<CarOrder> {
   RouteFromToCubit() : super(CarOrder(status: CarOrderStatus.waiting));

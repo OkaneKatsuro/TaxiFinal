@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/route_from_to/route_from_to.dart';
-import '../models/car_order.dart';
+import 'package:cars/models/car_order.dart';
+
 import 'maps/res/functions.dart';
 
 class CarStatus extends StatefulWidget {

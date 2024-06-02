@@ -20,7 +20,7 @@ import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 
-import '../../../models/car_order.dart';
+import 'package:cars/models/car_order.dart';
 import '../../../pages/comment_page.dart';
 import '../../../pages/search_page.dart';
 

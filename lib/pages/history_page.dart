@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-import '../models/car_order.dart';
+import 'package:cars/models/car_order.dart';
+
 import '../res/styles.dart';
 import '../widgets/planing/planing_container.dart';
 

@@ -1,7 +1,13 @@
 import 'dart:async';
 
+import 'package:cars/bloc/car_order_bloc/car_order_bloc.dart';
 import 'package:cars/bloc/route_from_to/route_from_to.dart';
+import 'package:cars/models/car_order.dart';
+
+
+
 import 'package:cars/pages/pass_home_page.dart';
+import 'package:cars/res/token_login.dart';
 import 'package:cars/res/utils.dart';
 import 'package:cars/widgets/bottom_sheet/bottom_shet_header.dart';
 import 'package:cars/widgets/bottom_sheet/pass_bottom_shet_body.dart';
@@ -15,8 +21,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/route_manager.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../bloc/car_order_bloc/car_order_bloc.dart';
-import '../models/car_order.dart';
+
+
 import '../models/route_from_to.dart';
 
 class VideoPlayerPage extends StatefulWidget {
@@ -30,38 +36,57 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   GlobalKey<ExpandableBottomSheetState> key = GlobalKey();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  late VideoPlayerController _firstController;
-  late VideoPlayerController _secondController;
+  late VideoPlayerController? _firstController;
+  late VideoPlayerController? _secondController;
   late CarOrder order;
 
   StreamSubscription<dynamic>? streamSubscription;
 
+  String url1 = "";
+  String url2 = "";
+
   @override
   void initState() {
     super.initState();
-
+    _initializeControllers();
     order = context.read<CarOrderBloc>().currentOrder;
+    _setupFirebaseListener();
+  }
 
-    _firstController = VideoPlayerController.network(
-        'rtmp://rtmp.streamaxia.com/streamaxia/-225403035')
-      ..initialize().then((_) {
-        setState(() {});
-        _firstController.play();
+  Future<void> _initializeControllers() async {
+    bool success = await updateToken();
+    if (success) {
+      setState(() {
+        url1 = "rtmp://nscar.online:6604/3/3?AVType=1&jsession=${token.rtmpLink}&DevIDNO=0151376&Channel=0&Stream=1";
+        url2 = "rtmp://nscar.online:6604/3/3?AVType=1&jsession=${token.rtmpLink}&DevIDNO=0151376&Channel=1&Stream=1";
+        print("AAAAAAAAAAa:$url1");
+        _firstController = VideoPlayerController.network(url1);
+        _secondController = VideoPlayerController.network(url2);
       });
-
-    _secondController = VideoPlayerController.network(
-        'rtmp://rtmp.streamaxia.com/streamaxia/-225403035')
-      ..initialize().then((_) {
+      // Initializing the controllers asynchronously
+      await Future.wait([
+        _firstController!.initialize(),
+        _secondController!.initialize(),
+      ]);
+      // After initialization, if mounted, setState to rebuild UI
+      if (mounted) {
         setState(() {});
-      });
+      }
+      _firstController!.play();
+    } else {
+      print('Ошибка создания rtmp ссылки');
+    }
 
+  }
+
+  void _setupFirebaseListener() {
     if (context.read<CarOrderBloc>().currentOrder.from == null) {
       Future.delayed(const Duration(seconds: 3), () async {
         try {
           var point = await getCurrentPoint();
           context.read<CarOrderBloc>().currentOrder.from = point;
           setState(() {
-            order = order = context.read<CarOrderBloc>().currentOrder;
+            order = context.read<CarOrderBloc>().currentOrder;
           });
         } catch (e) {
           print(e);
@@ -81,11 +106,12 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
 
   @override
   void dispose() {
-    _firstController.dispose();
-    _secondController.dispose();
+    _firstController?.dispose();
+    _secondController?.dispose();
     streamSubscription?.cancel();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     var state = context.watch<RouteFromToCubit>().get();
@@ -104,7 +130,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
         persistentHeader: BottomSheetHeader(),
         expandableContent: PassBottomSheetBody(order: order),
         onIsExtendedCallback: () {
-          print('exon');
+          print('expanded');
         },
         onIsContractedCallback: () {},
         background: SafeArea(
@@ -120,13 +146,13 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
                     children: [
                       SizedBox(height: 50),
                       Expanded(
-                        child: _firstController.value.initialized
-                            ? VideoPlayer(_firstController)
+                        child: _firstController?.value?.initialized ?? false
+                            ? VideoPlayer(_firstController!)
                             : CircularProgressIndicator(),
                       ),
                       Expanded(
-                        child: _secondController.value.initialized
-                            ? VideoPlayer(_secondController)
+                        child: _secondController?.value?.initialized ?? false
+                            ? VideoPlayer(_secondController!)
                             : CircularProgressIndicator(),
                       ),
                     ],
@@ -149,5 +175,4 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
         ),
       ),
     );
-  }
-}
+  }}

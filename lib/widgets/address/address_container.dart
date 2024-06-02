@@ -1,11 +1,13 @@
 import 'package:cars/bloc/user/user_cubit.dart';
+import 'package:cars/models/place.dart';
 import 'package:cars/pages/address_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../../models/place.dart';
+
+
 import '../../pages/address_add_page.dart';
 import '../../res/styles.dart';
 

@@ -6,7 +6,7 @@ import 'package:cars/res/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../models/car_order.dart';
+import 'package:cars/models/car_order.dart';
 import '../../models/role.dart';
 import '../../pages/video_player_page.dart';
 import '../../res/styles.dart';

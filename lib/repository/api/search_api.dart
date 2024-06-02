@@ -1,6 +1,8 @@
+import 'package:cars/models/place.dart';
 import 'package:dio/dio.dart';
 
-import '../../models/place.dart';
+
+
 import '../../res/config.dart';
 
 class SearchApi {

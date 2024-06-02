@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:cars/bloc/car_order_bloc/car_order_bloc.dart';
 import 'package:cars/bloc/route_from_to/route_from_to.dart';
 import 'package:cars/bloc/user/user_cubit.dart';
+import 'package:cars/models/car_order.dart';
 import 'package:cars/pages/video_player_page.dart';
 import 'package:cars/res/odder_functions.dart';
 import 'package:cars/res/styles.dart';
@@ -16,10 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
-import '../bloc/car_order_bloc/car_order_bloc.dart';
-import '../models/car.dart';
-import '../models/car_order.dart';
-import '../res/firebase_utils.dart';
 import '../res/utils.dart';
 import '../widgets/bottom_sheet/pass_bottom_active.dart';
 import '../widgets/bottom_sheet/pass_bottom_perenos.dart';

@@ -22,7 +22,7 @@ import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../models/car_order.dart';
+import 'package:cars/models/car_order.dart';
 import '../../../pages/comment_page.dart';
 import '../../../pages/search_page.dart';
 

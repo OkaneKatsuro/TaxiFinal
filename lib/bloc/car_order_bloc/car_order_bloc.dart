@@ -4,7 +4,7 @@ import 'package:cars/repository/repo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../models/car_order.dart';
+import 'package:cars/models/car_order.dart';
 import '../../res/firebase_utils.dart';
 import '../../res/odder_functions.dart';
 

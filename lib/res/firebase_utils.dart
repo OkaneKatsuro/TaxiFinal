@@ -9,7 +9,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
-import '../models/car_order.dart';
+import 'package:cars/models/car_order.dart';
+
 import '../models/message.dart';
 import '../models/role.dart';
 
